@@ -1,0 +1,70 @@
+
+query allIssuesFields($org: String!, $projectID: Int!) {
+  viewer {
+    organization(login: $org) {
+      projectV2(number: $projectID) {
+        items(first: 20) {
+          nodes {
+            content {
+              ... on Issue {
+                url
+                title
+                state
+                assignees(first: 10) {
+                  nodes {
+                    login
+                  }
+                }
+                labels(first: 10) {
+                  nodes {
+                    name
+                  }
+                }
+                updatedAt
+              }
+            }
+            estimate: fieldValueByName(name: "Estimate") {
+              ... on ProjectV2ItemFieldNumberValue {
+                number
+              }
+            }
+            milestone: fieldValueByName(name: "Nua Milestone") {
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                name
+              }
+            }
+            priority: fieldValueByName(name: "Priority") {
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                name
+              }
+            }
+            issuetype: fieldValueByName(name: "Issue Type") {
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                name
+              }
+            }
+            howfound: fieldValueByName(name: "How Found") {
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                name
+              }
+            }
+            datefound: fieldValueByName(name: "Date found") {
+              ... on ProjectV2ItemFieldDateValue {
+                date
+              }
+            }
+            datefixed: fieldValueByName(name: "Date fixed (by developer)") {
+              ... on ProjectV2ItemFieldDateValue {
+                date
+              }
+            }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }
+    }
+  }
+}
